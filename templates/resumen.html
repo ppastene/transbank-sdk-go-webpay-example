@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Resumen de compra</h1>
+    {{ if .token_ws}}
+    <p>{{.token_ws}}</p>
+    <p>{{.response}}</p>
+    <p>¿Quiere revertir/anular la compra?</p>
+    <form method="POST" action="/anular">
+        <input type="hidden" name="token" value="{{.token_ws}}"><br>
+        <input type="number" name="amount" value="{{.response.Amount}}"><br>
+        <input type="submit" value="Anular">
+    </form>
+    {{ else if and .tbk_orden_compra .tbk_id_sesion }}
+    <p>{{.tbk_orden_compra}}</p>
+    <p>{{.tbk_id_sesion}}</p>
+    {{end}}
+    <p>{{.estado}}</p>
+</body>
+</html>

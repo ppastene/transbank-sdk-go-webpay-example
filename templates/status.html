@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Status de la transacción</h1>
+    <ul>
+        <li>VCI: {{.response.Vci}}</li>
+        <li>Amount: {{.response.Amount}}</li>
+        <li>Status: {{.response.Status}}</li>
+        <li>Buy Order: {{.response.BuyOrder}}</li>
+        <li>Session Id: {{.response.SessionId}}</li>
+        <li>Card Number: {{.response.CardDetail.CardNumber}}</li>
+        <li>Accounting Date: {{.response.AccountingDate}}</li>
+        <li>Transaction Date: {{.response.TransactionDate}}</li>
+        <li>Authorization Code: {{.response.AuthorizationCode}}</li>
+        <li>Payment Type Code: {{.response.PaymentTypeCode}}</li>
+        <li>Response Code: {{.response.ResponseCode}}</li>
+        <li>Installments Amount: {{.response.InstallmentsAmount}}</li>
+        <li>Installments Number: {{.response.InstallmentsNumber}}</li>
+        <li>Balance: {{.response.Balance}}</li>
+    </ul>
+</body>
+</html>
