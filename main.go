@@ -32,7 +32,6 @@ func main() {
 	})
 
 	router.GET("/", func(c *gin.Context) {
-		fmt.Println(c.Request.Host)
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 	router.POST("/pagar", func(c *gin.Context) {
@@ -49,7 +48,11 @@ func main() {
 		t := time.Now().Local()
 		order := fmt.Sprintf("order%d%d%d%d%d%d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
 		session := fmt.Sprintf("session%d%d%d%d%d%d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
-		response := transaction.Create(order, session, amount, "http://"+os.Getenv("APP_URL")+"/resumen")
+		response, err := transaction.Create(order, session, amount, "http://"+os.Getenv("APP_URL")+"/resumen")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+			return
+		}
 		if len(response.Token) > 0 {
 			tokens = append(tokens, response.Token)
 		}
@@ -63,7 +66,11 @@ func main() {
 		var token_ws, tbk_orden_compra, tbk_id_sesion, estado string
 		if len(c.Query("token_ws")) > 0 {
 			token_ws = c.Query("token_ws")
-			response := transaction.Commit(token_ws)
+			response, err := transaction.Commit(token_ws)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, err)
+				return
+			}
 			switch response.Status {
 			case "AUTHORIZED":
 				estado = "AUTORIZADA"
@@ -92,7 +99,13 @@ func main() {
 			c.JSON(http.StatusBadRequest, "badrequest")
 			return
 		}
-		response := transaction.Refund(token, amount)
+		response, err := transaction.Refund(token, amount)
+		if err != nil {
+			if err != nil {
+				c.JSON(http.StatusBadRequest, err)
+				return
+			}
+		}
 		c.HTML(http.StatusOK, "anular.html", gin.H{
 			"response": response,
 		})
@@ -109,7 +122,11 @@ func main() {
 		tokenParam := c.Param("token")
 		for _, token := range tokens {
 			if token == tokenParam {
-				response := transaction.Status(token)
+				response, err := transaction.Status(token)
+				if err != nil {
+					c.JSON(http.StatusBadRequest, err)
+					return
+				}
 				c.HTML(http.StatusOK, "status.html", gin.H{
 					"response": response,
 				})
