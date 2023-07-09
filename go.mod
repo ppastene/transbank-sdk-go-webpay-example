@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
-	github.com/ppastene/unnofficial-transbank-sdk-go v0.1.0
+	github.com/ppastene/unnofficial-transbank-sdk-go v0.2.0
 )
 
 require (
